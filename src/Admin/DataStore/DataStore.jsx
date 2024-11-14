@@ -63,7 +63,7 @@ export default function DataStore() {
 
   return (
     <>
-      <div className="flex justify-center">
+      <div className="flex justify-center ml-[9rem] text-gray-800">
         <h1 className="text-6xl font-extrabold font-Cabin">Quiz Data</h1>
       </div>
       <Box
@@ -75,6 +75,7 @@ export default function DataStore() {
           marginTop: 10,
           marginBottom: 10,
           flexDirection: "column",
+          marginLeft: 20,
         }}
       >
         <FormControl sx={{ width: 200, marginBottom: 5 }}>
@@ -92,7 +93,7 @@ export default function DataStore() {
           </Select>
         </FormControl>
         <FormControl sx={{ width: 200, marginBottom: 5 }}>
-          <InputLabel id="demo-simple-select-label">MOde</InputLabel>
+          <InputLabel id="demo-simple-select-label">Mode</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
