@@ -1,9 +1,16 @@
 const Express = require("express");
 const router = Express.Router();
 
-const { storeData, getData } = require("../Components/InsertData");
+const {
+  storeData,
+  getData,
+  getAllData,
+  getAllDataRole,
+} = require("../Components/InsertData");
 
 router.get("/getdata", getData);
+router.get("/getalldata", getAllData);
+router.get("/getalldatarole", getAllDataRole);
 router.post("/setdata", storeData);
 router.get("/show", async (req, res) => {
   res.send({

@@ -16,7 +16,7 @@ export default function RoleCard({ handleClickOpen }) {
           <div className="flex-grow h-0.5 bg-gray-500"></div>
           <div className="px-6 py-3 bg-gray-300 rounded-lg mx-4">
             <h1 className="text-4xl font-Cabin font-bold text-gray-800">
-              Choose Your Skill Path
+              Choose Your Role Path
             </h1>
           </div>
           <div className="flex-grow h-0.5 bg-gray-500"></div>
