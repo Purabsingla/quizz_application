@@ -8,7 +8,9 @@ const {
   getAllDataRole,
 } = require("../Components/InsertData");
 
+const { FindData } = require("../Components/QuizData");
 router.get("/getdata", getData);
+router.post("/getdatabytitle", FindData);
 router.get("/getalldata", getAllData);
 router.get("/getalldatarole", getAllDataRole);
 router.post("/setdata", storeData);

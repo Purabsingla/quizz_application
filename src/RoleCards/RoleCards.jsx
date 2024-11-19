@@ -37,7 +37,7 @@ export default function RoleCard({ handleClickOpen }) {
           <FaHtml5 style={{ height: 53, width: 36 }} className="text-gray-50" />
           <button
             className="z-10 duration-500 font-bold px-4 py-2 bg-gray-50 text-red-600 hover:bg-red-600 hover:text-gray-50 rounded-full shadow-md transition-colors ease-in-out"
-            onClick={() => handleClickOpen("Frontend")}
+            onClick={() => handleClickOpen("Frontend Development")}
           >
             Next
           </button>
@@ -56,7 +56,7 @@ export default function RoleCard({ handleClickOpen }) {
           <FaNode style={{ height: 53, width: 36 }} className="text-gray-50" />
           <button
             className="z-10 duration-500 font-bold px-4 py-2 bg-gray-50 text-green-600 hover:bg-green-600 hover:text-gray-50 rounded-full shadow-md transition-colors ease-in-out"
-            onClick={() => handleClickOpen("Backend")}
+            onClick={() => handleClickOpen("Backend Development")}
           >
             Next
           </button>
@@ -78,7 +78,7 @@ export default function RoleCard({ handleClickOpen }) {
           />
           <button
             className="z-10 duration-500 font-bold px-4 py-2 bg-gray-50 text-green-500 hover:bg-green-500 hover:text-gray-50 rounded-full shadow-md transition-colors ease-in-out"
-            onClick={() => handleClickOpen("Android")}
+            onClick={() => handleClickOpen("Android Development")}
           >
             Next
           </button>
@@ -97,7 +97,7 @@ export default function RoleCard({ handleClickOpen }) {
           <FaApple style={{ height: 53, width: 36 }} className="text-gray-50" />
           <button
             className="z-10 duration-500 font-bold px-4 py-2 bg-gray-50 text-black hover:bg-black hover:text-gray-50 rounded-full shadow-md transition-colors ease-in-out"
-            onClick={() => handleClickOpen("iOS")}
+            onClick={() => handleClickOpen("iOS Development")}
           >
             Next
           </button>
@@ -119,7 +119,7 @@ export default function RoleCard({ handleClickOpen }) {
           />
           <button
             className="z-10 duration-500 font-bold px-4 py-2 bg-gray-50 text-purple-600 hover:bg-purple-600 hover:text-gray-50 rounded-full shadow-md transition-colors ease-in-out"
-            onClick={() => handleClickOpen("GameDeveloper")}
+            onClick={() => handleClickOpen("Game Development")}
           >
             Next
           </button>
@@ -142,7 +142,7 @@ export default function RoleCard({ handleClickOpen }) {
           />
           <button
             className="z-10 duration-500 font-bold px-4 py-2 bg-gray-50 text-blue-600 hover:bg-blue-600 hover:text-gray-50 rounded-full shadow-md transition-colors ease-in-out"
-            onClick={() => handleClickOpen("DevOps")}
+            onClick={() => handleClickOpen("DevOps Engineer")}
           >
             Next
           </button>
@@ -162,7 +162,7 @@ export default function RoleCard({ handleClickOpen }) {
           <FaBrain style={{ height: 53, width: 36 }} className="text-gray-50" />
           <button
             className="z-10 duration-500 font-bold px-4 py-2 bg-gray-50 text-yellow-600 hover:bg-yellow-600 hover:text-gray-50 rounded-full shadow-md transition-colors ease-in-out"
-            onClick={() => handleClickOpen("AI")}
+            onClick={() => handleClickOpen("AI And Data Scientist")}
           >
             Next
           </button>
@@ -184,7 +184,7 @@ export default function RoleCard({ handleClickOpen }) {
           />
           <button
             className="z-10 duration-500 font-bold px-4 py-2 bg-gray-50 text-pink-500 hover:bg-pink-500 hover:text-gray-50 rounded-full shadow-md transition-colors ease-in-out"
-            onClick={() => handleClickOpen("UXDesign")}
+            onClick={() => handleClickOpen("UX Design")}
           >
             Next
           </button>

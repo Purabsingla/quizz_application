@@ -1,6 +1,7 @@
 import "./App.css";
 import "./CSS/ButtonStyle.css";
 import "./CSS/Question.css";
+// import Finish from "./FinishPage/FinishPage";
 import ResponsiveDrawer from "./Admin/Login/AdminLogin";
 import Sidebar from "./Admin/Dashboard/AdminHome";
 import Home from "./Home/Home";
@@ -16,9 +17,6 @@ function App() {
   const [viewSidebar, setViewSidebar] = useState(false);
   return (
     <div className="App">
-      {/* <Quiz /> */}
-      {/* <DataStore /> */}
-      {/* <Sidebar /> */}
       {viewSidebar ? (
         <div>
           <Sidebar />
@@ -41,6 +39,7 @@ function App() {
           </Routes>
         </div>
       )}
+      {/* <Finish /> */}
     </div>
   );
 }

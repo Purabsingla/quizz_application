@@ -1,68 +1,121 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const Quiz = () => {
+const Quiz = ({ language, Data, mode, ques, HandlePoints, HandleClick }) => {
+  const [randomQuestions, setRandomQuestions] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [isCorrect, setIsCorrect] = useState(null);
+  const [isNextEnabled, setIsNextEnabled] = useState(false);
 
-  const handleAnswerClick = (index) => {
-    setSelectedAnswer(index);
+  if (mode === "Intermediate") mode = "Medium";
+
+  // Function to shuffle array elements
+  const shuffleArray = (array) => {
+    const shuffledArray = [...array];
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledArray[i], shuffledArray[j]] = [
+        shuffledArray[j],
+        shuffledArray[i],
+      ];
+    }
+    return shuffledArray;
   };
+
+  // Function to get random data
+  const getRandomData = (array, count) => {
+    const result = [];
+    const usedIndices = new Set();
+
+    while (result.length < count) {
+      const randomIndex = Math.floor(Math.random() * array.length);
+      if (!usedIndices.has(randomIndex)) {
+        usedIndices.add(randomIndex);
+        const questionWithShuffledOptions = {
+          ...array[randomIndex],
+          options: shuffleArray(array[randomIndex].options),
+        };
+        result.push(questionWithShuffledOptions);
+      }
+    }
+
+    return result;
+  };
+
+  useEffect(() => {
+    // Fetch 5 random questions when the component mounts
+    const randomData = getRandomData(Data[mode].questions, ques);
+    setRandomQuestions(randomData);
+  }, [Data, mode]);
+
+  const handleAnswerClick = (selectedOption, correctAnswer) => {
+    setSelectedAnswer(selectedOption);
+    const correct = selectedOption === correctAnswer;
+    correct && HandlePoints();
+    setIsCorrect(correct);
+    setIsNextEnabled(true);
+  };
+
+  const handleNextClick = () => {
+    if (currentQuestionIndex < randomQuestions.length - 1) {
+      setCurrentQuestionIndex((prev) => prev + 1);
+      setSelectedAnswer(null);
+      setIsCorrect(null);
+      setIsNextEnabled(false);
+    } else {
+      alert("Quiz Completed!");
+      HandleClick();
+    }
+  };
+
+  if (randomQuestions.length === 0) return <p>Loading...</p>;
+
+  const currentQuestionData = randomQuestions[currentQuestionIndex];
+  const { questionText, options, correctAnswer } = currentQuestionData;
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 flex flex-col justify-center items-center p-6">
       {/* Header Section */}
       <div className="flex items-center justify-between w-full max-w-lg mb-2">
         <div className="flex items-center space-x-2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-6 h-6 text-white"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 6v6h6m6 0a9 9 0 11-9-9v0a9 9 0 019 9z"
-            />
-          </svg>
-          <h1 className="text-lg font-semibold text-white">CSS</h1>
+          <h1 className="text-lg font-semibold text-white">{language}</h1>
         </div>
       </div>
 
       {/* Question Section */}
       <div className="w-full max-w-lg bg-purple-700 p-6 mt-4 rounded-lg shadow-md border border-gray-700">
-        <p className="text-purple-300">Question 1 of 4</p>
+        <p className="text-purple-300">
+          Question {currentQuestionIndex + 1} of {randomQuestions.length}
+        </p>
         <div className="mt-3 p-4 rounded-lg bg-blue-600 h-32 overflow-hidden">
-          <h2 className="text-xl font-semibold leading-relaxed text-white break-words overflow-hidden">
-            Which command can you use to re-execute a previous command? This is
-            an example of a longer question to demonstrate how it will
+          <h2 className="text-xl font-semibold leading-relaxed text-white break-words">
+            {questionText}
           </h2>
         </div>
 
         {/* Answer Options */}
         <div className="mt-6 space-y-3">
-          {[
-            { label: "A", text: "!cat" },
-            { label: "B", text: "!!" },
-            { label: "C", text: "!a" },
-            { label: "D", text: "!3" },
-          ].map((answer, index) => (
+          {options.map((option, index) => (
             <button
               key={index}
-              onClick={() => handleAnswerClick(index)}
+              onClick={() => handleAnswerClick(option, correctAnswer)}
               className={`flex items-center justify-between p-4 w-full rounded-lg 
-                bg-purple-500 hover:bg-pink-600 transition 
                 ${
-                  selectedAnswer === index
-                    ? "ring-4 ring-pink-400"
+                  selectedAnswer === option
+                    ? isCorrect
+                      ? "ring-4 ring-green-400"
+                      : "ring-4 ring-red-400"
+                    : selectedAnswer !== null && option === correctAnswer
+                    ? "ring-4 ring-green-400"
                     : "ring-2 ring-purple-600"
-                }`}
+                } bg-purple-500 hover:bg-pink-600 transition`}
+              disabled={selectedAnswer !== null}
             >
               <span className="bg-pink-600 px-3 py-1 text-sm font-semibold rounded-full text-white">
-                {answer.label}
+                {String.fromCharCode(65 + index)}{" "}
+                {/* Converts 0 -> A, 1 -> B */}
               </span>
-              <span className="ml-4 text-lg text-white">{answer.text}</span>
+              <span className="ml-4 text-lg text-white">{option}</span>
             </button>
           ))}
         </div>
@@ -70,15 +123,29 @@ const Quiz = () => {
         {/* Progress Bar */}
         <div className="w-full bg-gray-600 h-2 mt-6 rounded-full">
           <div
-            className="bg-pink-500 h-2 rounded-full"
-            style={{ width: "25%" }} // Progress is 25%
+            className="bg-pink-500 h-2 rounded-full transition-all duration-150"
+            style={{
+              width: `${
+                ((currentQuestionIndex + 1) / randomQuestions.length) * 100
+              }%`,
+            }}
           ></div>
         </div>
 
-        {/* Submit Button */}
+        {/* Next/Submit Button */}
         <div className="mt-6 flex justify-center">
-          <button className="bg-pink-500 text-white py-3 px-6 rounded-full hover:bg-pink-600">
-            Submit Answer
+          <button
+            onClick={handleNextClick}
+            className={`py-3 px-6 rounded-full text-white transition ${
+              isNextEnabled
+                ? "bg-pink-500 hover:bg-pink-600"
+                : "bg-gray-400 cursor-not-allowed"
+            }`}
+            disabled={!isNextEnabled}
+          >
+            {currentQuestionIndex === randomQuestions.length - 1
+              ? "Submit"
+              : "Next"}
           </button>
         </div>
       </div>

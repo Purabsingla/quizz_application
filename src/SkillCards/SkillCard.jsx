@@ -83,7 +83,7 @@ export default function SkillCard({ handleClickOpen }) {
           />
           <button
             className="z-10 duration-500 font-bold px-4 py-2 bg-gray-50 text-yellow-500 hover:bg-yellow-500 hover:text-gray-50 rounded-full shadow-md transition-colors ease-in-out"
-            onClick={() => handleClickOpen("Javascript")}
+            onClick={() => handleClickOpen("JavaScript")}
           >
             Next
           </button>
@@ -119,13 +119,13 @@ export default function SkillCard({ handleClickOpen }) {
           <div className="flex flex-col items-center">
             <p className="text-xl font-extrabold">Node.js</p>
             <p className="relative text-xs inline-block after:absolute after:content-[''] after:ml-2 after:top-1/2 after:bg-gray-200 after:w-12 after:h-0.5 before:absolute before:content-[''] before:-ml-14 before:top-1/2 before:bg-gray-200 before:w-12 before:h-0.5">
-              Explore Backend Development with Node.js
+              Backend Development with Node.js
             </p>
           </div>
           <FaNode style={{ height: 53, width: 36 }} className="text-gray-50" />
           <button
             className="z-10 duration-500 font-bold px-4 py-2 bg-gray-50 text-green-600 hover:bg-green-600 hover:text-gray-50 rounded-full shadow-md transition-colors ease-in-out"
-            onClick={() => handleClickOpen("Node")}
+            onClick={() => handleClickOpen("Node.js")}
           >
             Next
           </button>
@@ -140,7 +140,7 @@ export default function SkillCard({ handleClickOpen }) {
           <div className="flex flex-col items-center">
             <p className="text-xl font-extrabold">MongoDB</p>
             <p className="relative text-xs inline-block after:absolute after:content-[''] after:ml-2 after:top-1/2 after:bg-gray-200 after:w-12 after:h-0.5 before:absolute before:content-[''] before:-ml-14 before:top-1/2 before:bg-gray-200 before:w-12 before:h-0.5">
-              Master NoSQL Databases with MongoDB
+              NoSQL Databases with MongoDB
             </p>
           </div>
           <FaDatabase
@@ -149,7 +149,7 @@ export default function SkillCard({ handleClickOpen }) {
           />
           <button
             className="z-10 duration-500 font-bold px-4 py-2 bg-gray-50 text-green-800 hover:bg-green-800 hover:text-gray-50 rounded-full shadow-md transition-colors ease-in-out"
-            onClick={() => handleClickOpen("MongoDb")}
+            onClick={() => handleClickOpen("MongoDB")}
           >
             Next
           </button>
@@ -171,7 +171,7 @@ export default function SkillCard({ handleClickOpen }) {
           />
           <button
             className="z-10 duration-500 font-bold px-4 py-2 bg-gray-50 text-blue-900 hover:bg-blue-900 hover:text-gray-50 rounded-full shadow-md transition-colors ease-in-out"
-            onClick={() => handleClickOpen("C")}
+            onClick={() => handleClickOpen("C Programming")}
           >
             Next
           </button>
@@ -193,7 +193,7 @@ export default function SkillCard({ handleClickOpen }) {
           />
           <button
             className="z-10 duration-500 font-bold px-4 py-2 bg-gray-50 text-blue-700 hover:bg-blue-700 hover:text-gray-50 rounded-full shadow-md transition-colors ease-in-out"
-            onClick={() => handleClickOpen("C++")}
+            onClick={() => handleClickOpen("C++ Programming")}
           >
             Next
           </button>
@@ -212,7 +212,7 @@ export default function SkillCard({ handleClickOpen }) {
           <FaJava style={{ height: 53, width: 36 }} className="text-gray-50" />
           <button
             className="z-10 duration-500 font-bold px-4 py-2 bg-gray-50 text-red-600 hover:bg-red-600 hover:text-gray-50 rounded-full shadow-md transition-colors ease-in-out"
-            onClick={() => handleClickOpen("Java")}
+            onClick={() => handleClickOpen("Java Programming")}
           >
             Next
           </button>
@@ -234,7 +234,7 @@ export default function SkillCard({ handleClickOpen }) {
           />
           <button
             className="z-10 duration-500 font-bold px-4 py-2 bg-gray-50 text-yellow-600 hover:bg-yellow-600 hover:text-gray-50 rounded-full shadow-md transition-colors ease-in-out"
-            onClick={() => handleClickOpen("Python")}
+            onClick={() => handleClickOpen("Python Programming")}
           >
             Next
           </button>
@@ -253,7 +253,7 @@ export default function SkillCard({ handleClickOpen }) {
           <FaPhp style={{ height: 53, width: 36 }} className="text-gray-50" />
           <button
             className="z-10 duration-500 font-bold px-4 py-2 bg-gray-50 text-indigo-600 hover:bg-indigo-600 hover:text-gray-50 rounded-full shadow-md transition-colors ease-in-out"
-            onClick={() => handleClickOpen("Php")}
+            onClick={() => handleClickOpen("PHP")}
           >
             Next
           </button>
@@ -267,7 +267,7 @@ export default function SkillCard({ handleClickOpen }) {
           <div className="flex flex-col items-center">
             <p className="text-xl font-extrabold">Kotlin</p>
             <p className="relative text-xs inline-block after:absolute after:content-[''] after:ml-2 after:top-1/2 after:bg-gray-200 after:w-12 after:h-0.5 before:absolute before:content-[''] before:-ml-14 before:top-1/2 before:bg-gray-200 before:w-12 before:h-0.5">
-              Elevate Your Android Development with Kotlin
+              Android Development with Kotlin
             </p>
           </div>
           <SiKotlin
@@ -276,7 +276,7 @@ export default function SkillCard({ handleClickOpen }) {
           />
           <button
             className="z-10 duration-500 font-bold px-4 py-2 bg-gray-50 text-purple-600 hover:bg-purple-600 hover:text-gray-50 rounded-full shadow-md transition-colors ease-in-out"
-            onClick={() => handleClickOpen("Kortlin")}
+            onClick={() => handleClickOpen("Kortlin Programming")}
           >
             Next
           </button>
@@ -298,7 +298,7 @@ export default function SkillCard({ handleClickOpen }) {
           />
           <button
             className="z-10 duration-500 font-bold px-4 py-2 bg-gray-50 text-blue-400 hover:bg-blue-400 hover:text-gray-50 rounded-full shadow-md transition-colors ease-in-out"
-            onClick={() => handleClickOpen("Flutter")}
+            onClick={() => handleClickOpen("Flutter Programming")}
           >
             Next
           </button>
@@ -322,7 +322,7 @@ export default function SkillCard({ handleClickOpen }) {
           />
           <button
             className="z-10 duration-500 font-bold px-4 py-2 bg-gray-50 text-blue-900 hover:bg-blue-900 hover:text-gray-50 rounded-full shadow-md transition-colors ease-in-out"
-            onClick={() => handleClickOpen("C#")}
+            onClick={() => handleClickOpen(".NET (C#)")}
           >
             Next
           </button>
@@ -367,7 +367,7 @@ export default function SkillCard({ handleClickOpen }) {
           />
           <button
             className="z-10 duration-500 text-cyan-700 font-bold px-4 py-2 bg-gray-50 text-lightgreen-600 hover:bg-cyan-700 hover:text-gray-50 rounded-full shadow-md transition-colors ease-in-out"
-            onClick={() => handleClickOpen("R")}
+            onClick={() => handleClickOpen("R Language")}
           >
             Next
           </button>
