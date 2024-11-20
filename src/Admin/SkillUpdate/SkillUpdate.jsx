@@ -18,7 +18,7 @@ import Select from "@mui/material/Select";
 import IconButton from "@mui/material/IconButton";
 import "../RoleUpdate/roleLoader.css";
 const columns = [
-  { id: "skill", label: "Skill", minWidth: 150 },
+  { id: "role", label: "Role", minWidth: 200 },
   { id: "mode", label: "Mode", minWidth: 100 },
   {
     id: "Question",
@@ -101,8 +101,15 @@ export default function StickyHeadTable() {
       .get("http://localhost:3001/api/getalldata")
       .then((res) => {
         console.log(res.data);
-        setData(res.data);
-        setFilteredData(res.data);
+        console.log(
+          res.data.filter((row) => row && row.Data && row.Data.title)
+        );
+        if (Array.isArray(res.data)) {
+          setData(res.data);
+          setFilteredData(res.data);
+        } else {
+          console.error("Unexpected data format:", res.data);
+        }
       })
       .catch((err) => console.log(err));
   }, []);
@@ -158,11 +165,11 @@ export default function StickyHeadTable() {
           }}
         >
           <FormControl sx={{ minWidth: 340 }}>
-            <InputLabel id="demo-simple-select-label">Skills</InputLabel>
+            <InputLabel id="demo-simple-select-label">Skill</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              label="Age"
+              label="Role"
               value={Skills}
               onChange={HandleChange}
             >
@@ -180,7 +187,7 @@ export default function StickyHeadTable() {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              label="Age"
+              label="Mode"
               onChange={HandleMode}
               value={Mode}
             >
@@ -206,7 +213,7 @@ export default function StickyHeadTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {Data.length > 0 ? (
+              {Data && Data.length > 0 ? (
                 Data.map((row) => (
                   <React.Fragment key={row._id}>
                     {/* Title Row */}
@@ -257,7 +264,7 @@ export default function StickyHeadTable() {
                       </React.Fragment>
                     ))}
                   </React.Fragment>
-                ))
+                )) /* From Uiverse.io by andrew-demchenk0 */
               ) : (
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                   <div className="cube-loader mb-6">

@@ -9,6 +9,7 @@ import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Hero from "./Hero";
 import RoleCard from "../RoleCards/RoleCards";
+import "../CSS/Footer.css";
 export default function Home({ setMode, setLanguage }) {
   const nextSectionRef = useRef(null);
   const navigate = useNavigate();
@@ -63,6 +64,13 @@ export default function Home({ setMode, setLanguage }) {
       </div>
       <SkillCard handleClickOpen={handleClickOpen} />
       <RoleCard handleClickOpen={handleClickOpen} />
+      <section class="bg-white">
+        <div class="max-w-screen-xl px-4 py-12 mx-auto space-y-8 overflow-hidden sm:px-6 lg:px-8">
+          <p class="mt-8 text-base leading-6 text-center text-gray-400">
+            © 2024 SKillQuiz, Inc. All rights reserved.
+          </p>
+        </div>
+      </section>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Mode</DialogTitle>
         <DialogContent

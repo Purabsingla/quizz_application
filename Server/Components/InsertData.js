@@ -6,54 +6,111 @@ const storeData = async (req, res) => {
   const { title, mode, questions } = req.body;
 
   // Validation of the incoming data
-  if (!title || !mode || !Array.isArray(questions) || questions.length === 0) {
+  if (
+    !title ||
+    !mode ||
+    !Array.isArray(questions) ||
+    questions.length === 0 ||
+    !questions.every(
+      (q) =>
+        q.questionText &&
+        Array.isArray(q.options) &&
+        typeof q.correctAnswer !== "undefined"
+    )
+  ) {
     return res.status(400).json({ error: "Invalid data format" });
   }
 
   try {
     let data = await database.database();
     const collection = data.collection("quizdata");
-    const quizCard = await collection.findOne({ title });
+
+    // Search for the quiz by title in the Data object
+    const quizCard = await collection.findOne({ "Data.title": title });
 
     if (!quizCard) {
-      const modes = { [mode]: questions };
-      const insert = await collection.insertOne({ title: title, modes: modes });
-      console.log(insert);
+      // Create the new Data structure with modes and questions
+      const newData = {
+        Data: {
+          title: title,
+          modes: {
+            [mode]: {
+              questions: questions.map((q) => ({
+                questionText: q.questionText,
+                options: q.options,
+                correctAnswer: q.correctAnswer,
+              })),
+            },
+          },
+        },
+      };
+
+      const insert = await collection.insertOne(newData);
       insert &&
-        response.send({
-          status: 200,
+        res.status(200).json({
           message: "Quiz Data Stored successfully",
         });
     } else {
       console.log("Else works of quizcard ");
-      // Update the document with new questions
-      if (quizCard.modes && quizCard.modes[mode]) {
-        // If mode exists, push new questions into the existing mode
-        const modeKey = `modes.${mode}.questions`;
-        const result = await collection.updateOne(
-          { title },
-          { $push: { [modeKey]: { $each: questions } } } // Add new questions to the existing mode
-        );
 
-        res
-          .status(200)
-          .json({ message: "Questions added to existing mode", result });
+      const existingQuestions = quizCard.Data.modes?.[mode]?.questions || []; // Retrieve existing questions for the mode
+      const newQuestions = questions.filter(
+        (q) =>
+          !existingQuestions.some((eq) => eq.questionText === q.questionText)
+      ); // Filter out duplicates
+
+      if (newQuestions.length > 0) {
+        if (quizCard.Data.modes && quizCard.Data.modes[mode]) {
+          // If mode exists, push only the new questions into the existing mode
+          const modeKey = `Data.modes.${mode}.questions`;
+          const result = await collection.updateOne(
+            { "Data.title": title },
+            {
+              $push: {
+                [modeKey]: {
+                  $each: newQuestions.map((q) => ({
+                    questionText: q.questionText,
+                    options: q.options,
+                    correctAnswer: q.correctAnswer,
+                  })),
+                },
+              },
+            }
+          );
+
+          res.status(200).json({
+            message: "New questions added to existing mode",
+            addedQuestions: newQuestions,
+            result,
+          });
+        } else {
+          // If mode doesn't exist, create the new mode with the provided questions
+          const newMode = {
+            [`Data.modes.${mode}`]: {
+              questions: newQuestions.map((q) => ({
+                questionText: q.questionText,
+                options: q.options,
+                correctAnswer: q.correctAnswer,
+              })),
+            },
+          };
+
+          const result = await collection.updateOne(
+            { "Data.title": title },
+            { $set: newMode }
+          );
+
+          res.status(200).json({
+            message: "New mode created and questions added",
+            addedQuestions: newQuestions,
+            result,
+          });
+        }
       } else {
-        // If mode doesn't exist, create the new mode with the provided questions
-        const newMode = {
-          [`modes.${mode}`]: {
-            questions: questions,
-          },
-        };
-
-        const result = await collection.updateOne(
-          { title },
-          { $set: newMode } // Create a new mode and set its questions
-        );
-
-        res
-          .status(200)
-          .json({ message: "New mode created and questions added", result });
+        // No new questions to add
+        res.status(200).json({
+          message: "All questions already exist. No new questions added.",
+        });
       }
     }
   } catch (err) {

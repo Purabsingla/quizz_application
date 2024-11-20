@@ -189,24 +189,6 @@ export default function RoleCard({ handleClickOpen }) {
             Next
           </button>
         </div>
-        <div className="overflow-hidden relative w-56 h-64 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-2xl text-gray-50 flex flex-col justify-center items-center gap-4 transition hover:scale-105 shadow-lg">
-          <FaHourglassHalf
-            style={{ height: 80, width: 80 }}
-            className="opacity-70 animate-pulse"
-          />
-          <div className="text-center">
-            <p className="text-2xl font-extrabold">Coming Soon</p>
-            <p className="text-sm font-light mt-2">
-              Exciting new features are on their way!
-            </p>
-          </div>
-          <button
-            className="mt-4 px-6 py-2 bg-gray-50 text-purple-600 hover:bg-purple-600 hover:text-gray-50 rounded-full shadow-md transition-colors ease-in-out"
-            onClick={() => alert("Stay tuned!")}
-          >
-            Notify Me
-          </button>
-        </div>
         <div className="overflow-hidden relative w-56 h-64 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-2xl text-gray-50 flex flex-col justify-center items-center gap-4 pt-6 transition hover:scale-105 shadow-lg">
           <div className="text-center">
             <p className="text-2xl font-extrabold">Coming Soon</p>

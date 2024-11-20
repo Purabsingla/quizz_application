@@ -6,16 +6,11 @@ import Select from "@mui/material/Select";
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-
+import axios from "axios";
 export default function DataStore() {
   const [Type, setType] = useState("");
   const [question, setQuention] = useState("");
-  const [Options, setOptions] = useState({
-    option1: "",
-    option2: "",
-    option3: "",
-    option4: "",
-  });
+  const [Options, setOptions] = useState([]);
   const [CorrectOption, setCorrectOption] = useState(0);
   const [mode, setMode] = useState("");
 
@@ -31,35 +26,56 @@ export default function DataStore() {
   };
 
   const handleOption = (event) => {
-    setOptions({ ...Options, [event.target.name]: event.target.value });
+    setOptions((prevques) => [...prevques, event.target.value]);
   };
 
-  const HandleClick = () => {
-    // const form = {
-    //   title: Type,
-    //   modes: {
-    //     [mode]: {
-    //       questions: [
-    //         {
-    //           questionText: question,
-    //           options: Options,
-    //           correctAnswer: CorrectOption,
-    //         },
-    //       ],
-    //     },
-    //   },
-    // };
+  const HandleClick = async () => {
     const form = {
       title: Type,
       mode: mode,
-      questions: {
-        questionText: question,
-        options: Options,
-        correctAnswer: CorrectOption,
-      },
+      questions: [
+        {
+          questionText: question,
+          options: Options,
+          correctAnswer: Options[CorrectOption],
+        },
+      ],
     };
+    await axios
+      .post("http://localhost:3001/api/setdata", form)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
     console.log(form);
   };
+
+  const items = [
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "React",
+    "Node.js",
+    "MongoDB",
+    "C Programming",
+    "C++ Programming",
+    "Java Programming",
+    "Python Programming",
+    "PHP",
+    "Kortlin Programming",
+    "Flutter Programming",
+    ".NET (C#)",
+    "React Native",
+    "R Language",
+    "Frontend Development",
+    "Backend Development",
+    "Android Development",
+    "iOS Development",
+    "Game Development",
+    "DevOps Engineer",
+    "AI and Data Scientist",
+    "UX Design",
+  ];
 
   return (
     <>
@@ -78,7 +94,7 @@ export default function DataStore() {
           marginLeft: 20,
         }}
       >
-        <FormControl sx={{ width: 200, marginBottom: 5 }}>
+        <FormControl sx={{ width: 250, marginBottom: 5 }}>
           <InputLabel id="demo-simple-select-label">Title</InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -87,9 +103,12 @@ export default function DataStore() {
             label="Title"
             onChange={handleChange}
           >
-            <MenuItem value={"HTML"}>HTML</MenuItem>
-            <MenuItem value={"CSS"}>CSS</MenuItem>
-            <MenuItem value={"JS"}>JAVASCRIPT</MenuItem>
+            {items.length > 0 &&
+              items.map((item, index) => (
+                <MenuItem key={index} value={item}>
+                  {item}
+                </MenuItem>
+              ))}
           </Select>
         </FormControl>
         <FormControl sx={{ width: 200, marginBottom: 5 }}>
@@ -134,7 +153,7 @@ export default function DataStore() {
             />
             <TextField
               id="outlined-basic"
-              label="Option 3"
+              label="Option 2"
               variant="outlined"
               name="option3"
               sx={{ marginBottom: 5, width: 400 }}
@@ -144,7 +163,7 @@ export default function DataStore() {
           <Box>
             <TextField
               id="outlined-basic"
-              label="Option 2"
+              label="Option 3"
               variant="outlined"
               name="option2"
               sx={{ marginBottom: 5, width: 400 }}
@@ -169,10 +188,10 @@ export default function DataStore() {
             label="Correct Option"
             onChange={handleChange2}
           >
-            <MenuItem value={1}>first</MenuItem>
-            <MenuItem value={2}>Sencond</MenuItem>
-            <MenuItem value={3}>Third</MenuItem>
-            <MenuItem value={4}>Fourth</MenuItem>
+            <MenuItem value={0}>first</MenuItem>
+            <MenuItem value={1}>Sencond</MenuItem>
+            <MenuItem value={2}>Third</MenuItem>
+            <MenuItem value={3}>Fourth</MenuItem>
           </Select>
         </FormControl>
         <Button variant="contained" onClick={HandleClick}>
