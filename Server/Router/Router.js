@@ -7,6 +7,7 @@ const {
   getAllData,
   getAllDataRole,
 } = require("../Components/InsertData");
+const { storeDataRole } = require("../Components/rolebased");
 
 const { FindData } = require("../Components/QuizData");
 router.get("/getdata", getData);
@@ -14,6 +15,7 @@ router.post("/getdatabytitle", FindData);
 router.get("/getalldata", getAllData);
 router.get("/getalldatarole", getAllDataRole);
 router.post("/setdata", storeData);
+router.post("/setdataRole", storeDataRole);
 router.get("/show", async (req, res) => {
   res.send({
     message: "Hello from Skill Quiz App",

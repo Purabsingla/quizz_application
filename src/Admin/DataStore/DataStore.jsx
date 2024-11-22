@@ -13,7 +13,7 @@ export default function DataStore() {
   const [Options, setOptions] = useState([]);
   const [CorrectOption, setCorrectOption] = useState(0);
   const [mode, setMode] = useState("");
-
+  const [typeRS, setTypeRS] = useState("");
   const handleChange = (event) => {
     setType(event.target.value);
   };
@@ -41,8 +41,14 @@ export default function DataStore() {
         },
       ],
     };
+    let link = "";
+    if (typeRS === "Skill") {
+      link = "http://localhost:3001/api/setdata";
+    } else if (typeRS === "Role") {
+      link = "http://localhost:3001/api/setdataRole";
+    } else return;
     await axios
-      .post("http://localhost:3001/api/setdata", form)
+      .post(link, form)
       .then((res) => {
         console.log(res.data);
       })
@@ -67,6 +73,8 @@ export default function DataStore() {
     ".NET (C#)",
     "React Native",
     "R Language",
+  ];
+  const itemsRole = [
     "Frontend Development",
     "Backend Development",
     "Android Development",
@@ -95,6 +103,19 @@ export default function DataStore() {
         }}
       >
         <FormControl sx={{ width: 250, marginBottom: 5 }}>
+          <InputLabel id="demo-simple-select-label">Skill / Role</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={typeRS}
+            label="Skill / Role"
+            onChange={(e) => setTypeRS(e.target.value)}
+          >
+            <MenuItem value={"Skill"}>Skill</MenuItem>
+            <MenuItem value={"Role"}>Role</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl sx={{ width: 250, marginBottom: 5 }}>
           <InputLabel id="demo-simple-select-label">Title</InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -103,12 +124,21 @@ export default function DataStore() {
             label="Title"
             onChange={handleChange}
           >
-            {items.length > 0 &&
+            {typeRS === "Skill" ? (
               items.map((item, index) => (
                 <MenuItem key={index} value={item}>
                   {item}
                 </MenuItem>
-              ))}
+              ))
+            ) : typeRS === "Role" ? (
+              itemsRole.map((item, index) => (
+                <MenuItem key={index} value={item}>
+                  {item}
+                </MenuItem>
+              ))
+            ) : (
+              <MenuItem>Select A Role</MenuItem>
+            )}
           </Select>
         </FormControl>
         <FormControl sx={{ width: 200, marginBottom: 5 }}>

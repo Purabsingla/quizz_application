@@ -1,6 +1,6 @@
 const database = require("../DB/Db");
 
-const storeData = async (req, res) => {
+const storeDataRole = async (req, res) => {
   const { title, mode, questions } = req.body;
 
   // Validation of the incoming data
@@ -21,7 +21,7 @@ const storeData = async (req, res) => {
 
   try {
     let data = await database.database();
-    const collection = data.collection("quizdata");
+    const collection = data.collection("rolebased");
 
     // Search for the quiz by title in the Data object
     const quizCard = await collection.findOne({ "Data.title": title });
@@ -117,58 +117,4 @@ const storeData = async (req, res) => {
   }
 };
 
-const getData = async (req, res) => {
-  try {
-    const { title, mode } = req.body;
-    console.log("Loading....");
-    console.log("Title is : ", title, " And Mode is ", mode);
-    let data = await database.database();
-    const collection = data.collection("quizdata");
-    const quiz = await collection.findOne({ "Data.title": title });
-    console.log(quiz);
-    if (quiz && quiz.Data.modes && quiz.Data.modes[mode]) {
-      console.log(quiz.Data.modes[mode]);
-      res.send({
-        status: 200,
-        Data: quiz.Data.modes[mode],
-      });
-    } else {
-      res.status(404).json({ error: "Quiz not found" });
-    }
-  } catch (err) {
-    err && res.send({ status: 404, message: err.message });
-  }
-};
-
-const getAllData = async (req, res) => {
-  try {
-    let data = await database.database();
-    const collection = data.collection("quizdata");
-    const quiz = await collection.find().toArray();
-    if (quiz) {
-      console.log(quiz);
-      res.status(200).json(quiz);
-    } else {
-      res.status(404).json({ error: "Quiz not found" });
-    }
-  } catch (err) {
-    err && res.send({ status: 404, message: err.message });
-  }
-};
-const getAllDataRole = async (req, res) => {
-  try {
-    let data = await database.database();
-    const collection = data.collection("rolebased");
-    const quiz = await collection.find().toArray();
-    if (quiz) {
-      console.log(quiz);
-      res.status(200).json(quiz);
-    } else {
-      res.status(404).json({ error: "Quiz not found" });
-    }
-  } catch (err) {
-    err && res.send({ status: 404, message: err.message });
-  }
-};
-
-module.exports = { storeData, getData, getAllData, getAllDataRole };
+module.exports = { storeDataRole };
