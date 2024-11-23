@@ -89,6 +89,10 @@ export default function StickyHeadTable() {
   const [Mode, setMode] = React.useState("");
 
   useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
     axios
       .get("http://localhost:3001/api/getalldatarole")
       .then((res) => {
@@ -97,8 +101,9 @@ export default function StickyHeadTable() {
         setFilteredData(res.data);
       })
       .catch((err) => console.log(err));
-  }, []);
+  };
 
+  //deleteQuestionRole
   const HandleChange = (event) => {
     setSkills(event.target.value);
     setMode("");
@@ -135,6 +140,29 @@ export default function StickyHeadTable() {
     console.log(filteredDataTemp);
 
     setData(filteredDataTemp);
+  };
+
+  const DeleteData = async (row, mode, questionText) => {
+    const json = {
+      title: row.title,
+      mode: mode,
+      questionText: row.modes[mode].questions.filter(
+        (ques) => ques.questionText === questionText
+      )[0].questionText,
+    };
+
+    console.log(json);
+
+    await axios
+      .post("http://localhost:3001/api/deleteQuestionRole", json)
+      .then((response) => {
+        console.log(response.data);
+        setData([]);
+        setSkills("");
+        setMode("");
+        fetchData();
+      })
+      .catch((err) => console.error(err));
   };
 
   return (
@@ -182,7 +210,9 @@ export default function StickyHeadTable() {
             </Select>
           </FormControl>
         </Box>
-        <TableContainer sx={{ minHeight: 728 }}>
+        <TableContainer
+          sx={{ maxHeight: 648, overflowX: "auto", overflowY: "auto" }}
+        >
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -239,7 +269,17 @@ export default function StickyHeadTable() {
                                 <IconButton aria-label="edit" size="small">
                                   <FaRegEdit />
                                 </IconButton>
-                                <IconButton aria-label="delete" size="small">
+                                <IconButton
+                                  aria-label="delete"
+                                  size="small"
+                                  onClick={() => {
+                                    DeleteData(
+                                      row.Data,
+                                      mode,
+                                      question.questionText
+                                    );
+                                  }}
+                                >
                                   <MdDeleteOutline />
                                 </IconButton>
                               </TableCell>

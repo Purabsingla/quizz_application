@@ -12,6 +12,18 @@ const Quiz = ({ language, Data, mode, ques, HandlePoints, HandleClick }) => {
   // Function to shuffle array elements
   const shuffleArray = (array) => {
     const shuffledArray = [...array];
+
+    // Separate the special cases
+    const noneOfTheseIndex = shuffledArray.indexOf("none of these");
+    const allOfTheseIndex = shuffledArray.indexOf("all of these");
+    const hasA = shuffledArray.includes("a") || shuffledArray.includes("A");
+    const hasB = shuffledArray.includes("b") || shuffledArray.includes("B");
+
+    // Remove "none of these" and "all of these" from the array
+    if (noneOfTheseIndex !== -1) shuffledArray.splice(noneOfTheseIndex, 1);
+    if (allOfTheseIndex !== -1) shuffledArray.splice(allOfTheseIndex, 1);
+
+    // Shuffle the remaining items
     for (let i = shuffledArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [shuffledArray[i], shuffledArray[j]] = [
@@ -19,6 +31,16 @@ const Quiz = ({ language, Data, mode, ques, HandlePoints, HandleClick }) => {
         shuffledArray[i],
       ];
     }
+
+    // Place "a" and "b" at the third position if both exist
+    if (hasA && hasB) {
+      shuffledArray.splice(2, 0, "a", "b");
+    }
+
+    // Append "none of these" and "all of these" to the bottom
+    if (noneOfTheseIndex !== -1) shuffledArray.push("none of these");
+    if (allOfTheseIndex !== -1) shuffledArray.push("all of these");
+
     return shuffledArray;
   };
 
@@ -63,7 +85,6 @@ const Quiz = ({ language, Data, mode, ques, HandlePoints, HandleClick }) => {
       setIsCorrect(null);
       setIsNextEnabled(false);
     } else {
-      alert("Quiz Completed!");
       HandleClick();
     }
   };
@@ -83,18 +104,18 @@ const Quiz = ({ language, Data, mode, ques, HandlePoints, HandleClick }) => {
       </div>
 
       {/* Question Section */}
-      <div className="w-full max-w-lg bg-purple-700 p-6 mt-4 rounded-lg shadow-md border border-gray-700">
+      <div className=" max-w-[50rem] bg-purple-700 p-6 mt-4 rounded-lg shadow-md border border-gray-700">
         <p className="text-purple-300">
           Question {currentQuestionIndex + 1} of {randomQuestions.length}
         </p>
-        <div className="mt-3 p-4 rounded-lg bg-blue-600 h-32 overflow-hidden">
+        <div className="mt-3 p-4 rounded-lg bg-blue-600 h-32 overflow-hidden w-[45rem] text-center">
           <h2 className="text-xl font-semibold leading-relaxed text-white break-words">
             {questionText}
           </h2>
         </div>
 
         {/* Answer Options */}
-        <div className="mt-6 space-y-3">
+        <div className="mt-6 space-y-3 w-[45rem]">
           {options.map((option, index) => (
             <button
               key={index}

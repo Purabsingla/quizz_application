@@ -5,13 +5,47 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import { useState } from "react";
-export default function Dialogg({ open, onClose, Data }) {
-  console.log(Data);
+
+export default function Dialogg({ open, onClose, Data, updateData }) {
   const [question, setQuestion] = useState(
     Data?.questionText?.[0]?.questionText || ""
   );
-  // const [Options, setOptions] = useState([]);
-  // const [CorrectOption, setCorrectOption] = useState('');
+  const [options, setOptions] = useState(
+    Data?.questionText?.[0]?.options || ["", "", "", ""]
+  );
+  const [correctOption, setCorrectOption] = useState(
+    Data?.questionText?.[0]?.correctAnswer || ""
+  );
+  const oldQuestion = Data?.questionText?.[0]?.questionText;
+  const handleQuestion = (event) => {
+    setQuestion(event.target.value);
+  };
+
+  const handleOptionChange = (index, value) => {
+    const updatedOptions = [...options];
+    updatedOptions[index] = value;
+    setOptions(updatedOptions);
+  };
+
+  const handleCorrectOptionChange = (event) => {
+    setCorrectOption(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const form = {
+      title: Data.title,
+      mode: Data.mode,
+      oldQuestionText: oldQuestion,
+      updatedQuestion: {
+        questionText: question,
+        options: options,
+        correctAnswer: correctOption,
+      },
+    };
+    updateData(form);
+  };
+
   return (
     <>
       <Dialog
@@ -20,21 +54,7 @@ export default function Dialogg({ open, onClose, Data }) {
         disableScrollLock
         PaperProps={{
           component: "form",
-          onSubmit: (event) => {
-            event.preventDefault();
-            const form = {
-              title: Data.title,
-              mode: Data.mode,
-              questions: [
-                {
-                  questionText: question,
-                  //   options: Options,
-                  //   correctAnswer: Options[CorrectOption],
-                },
-              ],
-            };
-            console.log(form);
-          },
+          onSubmit: handleSubmit,
         }}
       >
         <DialogTitle>Quiz Update</DialogTitle>
@@ -42,7 +62,6 @@ export default function Dialogg({ open, onClose, Data }) {
           <TextField
             disabled
             margin="dense"
-            id="name"
             name="Skill / Role"
             label="Skill / Role"
             type="text"
@@ -53,7 +72,6 @@ export default function Dialogg({ open, onClose, Data }) {
           <TextField
             disabled
             margin="dense"
-            id="name"
             name="title"
             label="Title"
             type="text"
@@ -64,7 +82,6 @@ export default function Dialogg({ open, onClose, Data }) {
           <TextField
             disabled
             margin="dense"
-            id="name"
             name="Mode"
             label="Mode"
             type="text"
@@ -76,79 +93,44 @@ export default function Dialogg({ open, onClose, Data }) {
             autoFocus
             required
             margin="dense"
-            id="name"
             name="Question"
             label="Question"
             type="text"
             fullWidth
             variant="standard"
-            value={Data.questionText[0].questionText}
+            onChange={handleQuestion}
+            value={question}
           />
-
+          {options.map((option, index) => (
+            <TextField
+              key={index}
+              autoFocus
+              required
+              margin="dense"
+              label={`Option ${index + 1}`}
+              type="text"
+              fullWidth
+              variant="standard"
+              value={option}
+              onChange={(e) => handleOptionChange(index, e.target.value)}
+            />
+          ))}
           <TextField
             autoFocus
             required
             margin="dense"
-            id="name"
-            name="Option 1"
-            label="Option 1"
-            type="text"
-            fullWidth
-            variant="standard"
-            value={Data.questionText[0].options[0]}
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="Option 2"
-            label="Option 2"
-            type="text"
-            fullWidth
-            variant="standard"
-            value={Data.questionText[0].options[1]}
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="Option 3"
-            label="Option 3"
-            type="text"
-            fullWidth
-            variant="standard"
-            value={Data.questionText[0].options[2]}
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
-            name="Option 4"
-            label="Option 4"
-            type="text"
-            fullWidth
-            variant="standard"
-            value={Data.questionText[0].options[3]}
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="name"
             name="Correct Option"
             label="Correct Option"
             type="text"
             fullWidth
             variant="standard"
-            value={Data.questionText[0].correctAnswer}
+            onChange={handleCorrectOptionChange}
+            value={correctOption}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Cancel</Button>
-          <Button type="submit">Subscribe</Button>
+          <Button type="submit">Submit</Button>
         </DialogActions>
       </Dialog>
     </>

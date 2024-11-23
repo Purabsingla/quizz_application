@@ -171,4 +171,84 @@ const getAllDataRole = async (req, res) => {
   }
 };
 
-module.exports = { storeData, getData, getAllData, getAllDataRole };
+const deleteQuestion = async (req, res) => {
+  const { title, mode, questionText } = req.body;
+
+  if (!title || !mode || !questionText) {
+    return res.status(400).json({ error: "Invalid data format" });
+  }
+
+  try {
+    let data = await database.database();
+    const collection = data.collection("quizdata");
+
+    const result = await collection.updateOne(
+      { "Data.title": title },
+      {
+        $pull: {
+          [`Data.modes.${mode}.questions`]: { questionText: questionText }, // Removes the entire question object
+        },
+      }
+    );
+
+    if (result.modifiedCount > 0) {
+      console.log("Deleted Sucessfully");
+      res.status(200).json({ message: "Question deleted successfully" });
+    } else {
+      console.log("Something went wrong");
+      res.status(404).json({ error: "Question not found or delete failed" });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+const updateQuestion = async (req, res) => {
+  const { title, mode, oldQuestionText, updatedQuestion } = req.body;
+
+  if (!title || !mode || !oldQuestionText || !updatedQuestion) {
+    return res.status(400).json({ error: "Invalid data format" });
+  }
+
+  try {
+    let data = await database.database();
+    const collection = data.collection("quizdata");
+
+    const result = await collection.updateOne(
+      {
+        "Data.title": title,
+        [`Data.modes.${mode}.questions.questionText`]: oldQuestionText,
+      },
+      {
+        $set: {
+          [`Data.modes.${mode}.questions.$`]: {
+            questionText: updatedQuestion.questionText,
+            options: updatedQuestion.options,
+            correctAnswer: updatedQuestion.correctAnswer,
+          },
+        },
+      }
+    );
+
+    if (result.modifiedCount > 0) {
+      console.log("updated sucessfully ");
+      res.status(200).json({ message: "Question updated successfully" });
+    } else {
+      console.log("Something went wrong");
+      res.status(404).json({ error: "Question not found or update failed" });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = {
+  storeData,
+  getData,
+  getAllData,
+  getAllDataRole,
+  deleteQuestion,
+  updateQuestion,
+};

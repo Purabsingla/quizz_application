@@ -124,7 +124,27 @@ export default function StickyHeadTable() {
     setOpen(false);
   };
 
+  const updateData = async (data) => {
+    console.log(data, " From Table Side ");
+    await axios
+      .post("http://localhost:3001/api/updateQuestion", data)
+      .then((response) => {
+        if (response.data) {
+          setData([]);
+          setSkills("");
+          setMode("");
+          fetchData();
+          handleClose();
+        }
+      })
+      .catch((error) => console.error(error));
+    handleClose();
+  };
+
   useEffect(() => {
+    fetchData();
+  }, []);
+  const fetchData = () => {
     axios
       .get("http://localhost:3001/api/getalldata")
       .then((res) => {
@@ -140,8 +160,7 @@ export default function StickyHeadTable() {
         }
       })
       .catch((err) => console.log(err));
-  }, []);
-
+  };
   const HandleChange = (event) => {
     setSkills(event.target.value);
     setMode("");
@@ -178,6 +197,26 @@ export default function StickyHeadTable() {
     console.log(filteredDataTemp);
 
     setData(filteredDataTemp);
+  };
+
+  const DeleteData = async (row, mode, questionText) => {
+    const json = {
+      title: row.title,
+      mode: mode,
+      questionText: row.modes[mode].questions.filter(
+        (ques) => ques.questionText === questionText
+      )[0].questionText,
+    };
+    await axios
+      .post("http://localhost:3001/api/deleteQuestion", json)
+      .then((response) => {
+        console.log(response.data);
+        setData([]);
+        setSkills("");
+        setMode("");
+        fetchData();
+      })
+      .catch((err) => console.error(err));
   };
 
   return (
@@ -300,7 +339,17 @@ export default function StickyHeadTable() {
                                   >
                                     <FaRegEdit />
                                   </IconButton>
-                                  <IconButton aria-label="delete" size="small">
+                                  <IconButton
+                                    aria-label="delete"
+                                    size="small"
+                                    onClick={() => {
+                                      DeleteData(
+                                        row.Data,
+                                        mode,
+                                        question.questionText
+                                      );
+                                    }}
+                                  >
                                     <MdDeleteOutline />
                                   </IconButton>
                                 </TableCell>
@@ -331,7 +380,14 @@ export default function StickyHeadTable() {
         </Paper>
       </Box>
       <React.Fragment>
-        <Dialogg open={open} onClose={handleClose} Data={json} />
+        {open && (
+          <Dialogg
+            open={open}
+            onClose={handleClose}
+            Data={json}
+            updateData={updateData}
+          />
+        )}
       </React.Fragment>
     </>
   );

@@ -117,4 +117,37 @@ const storeDataRole = async (req, res) => {
   }
 };
 
-module.exports = { storeDataRole };
+const deleteQuestionRole = async (req, res) => {
+  const { title, mode, questionText } = req.body;
+
+  if (!title || !mode || !questionText) {
+    return res.status(400).json({ error: "Invalid data format" });
+  }
+
+  try {
+    let data = await database.database();
+    const collection = data.collection("rolebased");
+
+    const result = await collection.updateOne(
+      { "Data.title": title },
+      {
+        $pull: {
+          [`Data.modes.${mode}.questions`]: { questionText: questionText }, // Removes the entire question object
+        },
+      }
+    );
+
+    if (result.modifiedCount > 0) {
+      console.log("Deleted Sucessfully");
+      res.status(200).json({ message: "Question deleted successfully" });
+    } else {
+      console.log("Something went wrong");
+      res.status(404).json({ error: "Question not found or delete failed" });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = { storeDataRole, deleteQuestionRole };
