@@ -5,7 +5,9 @@ function AdminLogin({ setViewSidebar }) {
   const [password, setPassword] = useState("");
   const HandleClick = () => {
     console.log(email, password);
-    setViewSidebar(true);
+    email === "purabsingla83@gmail.com" &&
+      password === "1234567890" &&
+      setViewSidebar(true);
   };
   return (
     <>
@@ -33,7 +35,7 @@ function AdminLogin({ setViewSidebar }) {
                   />
                 </div>
 
-                <div className="mb-3">
+                <div className="mb-9">
                   <label className="mb-2 block text-xs font-semibold">
                     Password
                   </label>
@@ -63,7 +65,6 @@ function AdminLogin({ setViewSidebar }) {
           <div className="flex flex-wrap content-center justify-center rounded-r-md w-[24rem] h-[32rem]">
             <img
               className="w-full h-full bg-center bg-no-repeat bg-cover rounded-r-md"
-              //   src="https://i.imgur.com/9l1A4OS.jpeg"
               src={image}
               alt="Something Broo"
             />

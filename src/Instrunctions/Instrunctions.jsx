@@ -103,6 +103,7 @@ export default function Instruction({ mode, language }) {
           total={Data.total}
           mode={mode}
           language={language}
+          HandleClick={HandleClick}
         />
       ) : (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">

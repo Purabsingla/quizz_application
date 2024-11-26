@@ -256,7 +256,7 @@ export default function StickyHeadTable() {
               </Select>
             </FormControl>
             <FormControl sx={{ minWidth: 340 }}>
-              <InputLabel id="demo-simple-select-label">Age</InputLabel>
+              <InputLabel id="demo-simple-select-label">Mode</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"

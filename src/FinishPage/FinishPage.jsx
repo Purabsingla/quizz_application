@@ -1,6 +1,6 @@
 import "../CSS/Homenextbutton.css";
 import { Link } from "react-router-dom";
-export default function Finish({ Points, total, mode, language }) {
+export default function Finish({ Points, total, mode, language, HandleClick }) {
   return (
     <div className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 h-screen flex justify-center items-center">
       <div className="w-[35rem] rounded-md bg-white shadow-lg p-8">
@@ -32,6 +32,7 @@ export default function Finish({ Points, total, mode, language }) {
               onClick={() => {
                 mode = null;
                 language = null;
+                HandleClick();
                 console.log("Done bhai ");
               }}
             >
