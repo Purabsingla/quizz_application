@@ -27,7 +27,7 @@ const FindData = async (req, res) => {
         )
       : null;
 
-    console.log(quiz2);
+    console.log(quiz2, quiz);
 
     // Respond with the found data or return 404 if not found
     if (quiz) {

@@ -14,8 +14,9 @@ export default function Instruction({ mode, language }) {
   const [Points, setPoints] = useState(0);
   const DETA = {
     title: language,
-    mode: mode,
+    mode: mode === "Intermediate" ? "Medium" : mode,
   };
+  console.log(DETA);
   useEffect(() => {
     axios
       .post("http://localhost:3001/api/getdatabytitle", DETA)

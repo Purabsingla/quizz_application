@@ -162,7 +162,7 @@ export default function RoleCard({ handleClickOpen }) {
           <FaBrain style={{ height: 53, width: 36 }} className="text-gray-50" />
           <button
             className="z-10 duration-500 font-bold px-4 py-2 bg-gray-50 text-yellow-600 hover:bg-yellow-600 hover:text-gray-50 rounded-full shadow-md transition-colors ease-in-out"
-            onClick={() => handleClickOpen("AI And Data Scientist")}
+            onClick={() => handleClickOpen("AI and Data Scientist")}
           >
             Next
           </button>

@@ -12,6 +12,7 @@ const {
 const {
   storeDataRole,
   deleteQuestionRole,
+  updateQuestionRole,
 } = require("../Components/rolebased");
 
 const { FindData } = require("../Components/QuizData");
@@ -22,6 +23,7 @@ router.get("/getalldatarole", getAllDataRole);
 
 //POST
 router.post("/updateQuestion", updateQuestion);
+router.post("/updateQuestionRole", updateQuestionRole);
 router.post("/setdata", storeData);
 router.post("/deleteQuestion", deleteQuestion);
 router.post("/setdataRole", storeDataRole);

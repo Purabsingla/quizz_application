@@ -51,6 +51,14 @@ export default function DataStore() {
       .post(link, form)
       .then((res) => {
         console.log(res.data);
+        if (res.data) {
+          setType("");
+          setQuention("");
+          setOptions([]);
+          setCorrectOption(0);
+          setMode("");
+          setTypeRS("");
+        }
       })
       .catch((err) => console.log(err));
     console.log(form);
@@ -178,6 +186,7 @@ export default function DataStore() {
               label="Option 1"
               variant="outlined"
               name="option1"
+              value={Options[0] || ""}
               sx={{ marginBottom: 5, width: 400 }}
               onChange={handleOption}
             />
@@ -185,7 +194,8 @@ export default function DataStore() {
               id="outlined-basic"
               label="Option 2"
               variant="outlined"
-              name="option3"
+              value={Options[1] || ""}
+              name="option2"
               sx={{ marginBottom: 5, width: 400 }}
               onChange={handleOption}
             />
@@ -195,7 +205,8 @@ export default function DataStore() {
               id="outlined-basic"
               label="Option 3"
               variant="outlined"
-              name="option2"
+              name="option3"
+              value={Options[2] || ""}
               sx={{ marginBottom: 5, width: 400 }}
               onChange={handleOption}
             />
@@ -204,6 +215,7 @@ export default function DataStore() {
               label="Option 4"
               variant="outlined"
               name="option4"
+              value={Options[3] || ""}
               sx={{ marginBottom: 5, width: 400 }}
               onChange={handleOption}
             />

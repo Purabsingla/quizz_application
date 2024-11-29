@@ -17,6 +17,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import IconButton from "@mui/material/IconButton";
 import "./roleLoader.css";
+import Dialogg from "../Update/Update";
 const columns = [
   { id: "role", label: "Role", minWidth: 200 },
   { id: "mode", label: "Mode", minWidth: 100 },
@@ -87,6 +88,50 @@ export default function StickyHeadTable() {
   const [Data, setData] = React.useState([]);
   const [Skills, setSkills] = React.useState("");
   const [Mode, setMode] = React.useState("");
+
+  const [open, setOpen] = React.useState(false);
+  const [json, setJSON] = React.useState({});
+
+  const handleClickOpen = (row, mode, questionText) => {
+    setOpen(true);
+    console.log(mode);
+    console.log(
+      row.modes[mode].questions.filter(
+        (ques) => ques.questionText === questionText
+      )
+    );
+    const json = {
+      title: row.title,
+      mode: mode,
+      questionText: row.modes[mode].questions.filter(
+        (ques) => ques.questionText === questionText
+      ),
+      role: "Skill",
+    };
+    setJSON(json);
+    // console.log(row.modes[mode]); title role mode questiontext options correct answer
+  };
+
+  const updateData = async (data) => {
+    console.log(data, " From Table Side ");
+    await axios
+      .post("http://localhost:3001/api/updateQuestionRole", data)
+      .then((response) => {
+        if (response.data) {
+          setData([]);
+          setSkills("");
+          setMode("");
+          fetchData();
+          handleClose();
+        }
+      })
+      .catch((error) => console.error(error));
+    handleClose();
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     fetchData();
@@ -166,148 +211,170 @@ export default function StickyHeadTable() {
   };
 
   return (
-    <Box sx={{ marginLeft: 32, marginTop: 1 }}>
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
-        <Box
-          sx={{
-            marginTop: 1,
-            marginBottom: 1,
-            display: "flex",
-            justifyContent: "center",
-            gap: 4,
-          }}
-        >
-          <FormControl sx={{ minWidth: 340 }}>
-            <InputLabel id="demo-simple-select-label">Role</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              label="Role"
-              value={Skills}
-              onChange={HandleChange}
-            >
-              {Skill.map((item) => {
-                return (
-                  <MenuItem value={item} key={item}>
-                    {item}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-          <FormControl sx={{ minWidth: 340 }}>
-            <InputLabel id="demo-simple-select-label">Mode</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              label="Mode"
-              onChange={HandleMode}
-              value={Mode}
-            >
-              <MenuItem value={"Easy"}>Easy</MenuItem>
-              <MenuItem value={"Medium"}>Medium</MenuItem>
-              <MenuItem value={"Hard"}>Hard</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-        <TableContainer
-          sx={{ maxHeight: 648, overflowX: "auto", overflowY: "auto" }}
-        >
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ minWidth: column.minWidth }}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {Data.length > 0 ? (
-                Data.map((row) => (
-                  <React.Fragment key={row._id}>
-                    {/* Title Row */}
-                    <TableRow hover role="checkbox" tabIndex={-1}>
-                      <TableCell colSpan={columns.length}>
-                        <strong>{row.Data.title}</strong>
-                      </TableCell>
-                    </TableRow>
+    <>
+      <Box sx={{ marginLeft: 32, marginTop: 1 }}>
+        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+          <Box
+            sx={{
+              marginTop: 1,
+              marginBottom: 1,
+              display: "flex",
+              justifyContent: "center",
+              gap: 4,
+            }}
+          >
+            <FormControl sx={{ minWidth: 340 }}>
+              <InputLabel id="demo-simple-select-label">Role</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                label="Role"
+                value={Skills}
+                onChange={HandleChange}
+              >
+                {Skill.map((item) => {
+                  return (
+                    <MenuItem value={item} key={item}>
+                      {item}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+            <FormControl sx={{ minWidth: 340 }}>
+              <InputLabel id="demo-simple-select-label">Mode</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                label="Mode"
+                onChange={HandleMode}
+                value={Mode}
+              >
+                <MenuItem value={"Easy"}>Easy</MenuItem>
+                <MenuItem value={"Medium"}>Medium</MenuItem>
+                <MenuItem value={"Hard"}>Hard</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+          <TableContainer
+            sx={{ maxHeight: 648, overflowX: "auto", overflowY: "auto" }}
+          >
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  {columns.map((column) => (
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      style={{ minWidth: column.minWidth }}
+                    >
+                      {column.label}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {Data.length > 0 ? (
+                  Data.map((row) => (
+                    <React.Fragment key={row._id}>
+                      {/* Title Row */}
+                      <TableRow hover role="checkbox" tabIndex={-1}>
+                        <TableCell colSpan={columns.length}>
+                          <strong>{row.Data.title}</strong>
+                        </TableCell>
+                      </TableRow>
 
-                    {/* Mode Rows */}
-                    {Object.keys(row.Data.modes).map((mode) => (
-                      <React.Fragment key={mode}>
-                        {/* Mode Header */}
-                        <TableRow hover role="checkbox" tabIndex={-1}>
-                          <TableCell colSpan={columns.length}>
-                            <em>{mode}</em>
-                          </TableCell>
-                        </TableRow>
+                      {/* Mode Rows */}
+                      {Object.keys(row.Data.modes).map((mode) => (
+                        <React.Fragment key={mode}>
+                          {/* Mode Header */}
+                          <TableRow hover role="checkbox" tabIndex={-1}>
+                            <TableCell colSpan={columns.length}>
+                              <em>{mode}</em>
+                            </TableCell>
+                          </TableRow>
 
-                        {/* Questions */}
-                        {row.Data.modes[mode].questions.map(
-                          (question, qIndex) => (
-                            <TableRow
-                              hover
-                              role="checkbox"
-                              tabIndex={-1}
-                              key={qIndex}
-                            >
-                              <TableCell>{row.Data.title}</TableCell>
-                              <TableCell>{mode}</TableCell>
-                              <TableCell>{question.questionText}</TableCell>
-                              {question.options.map((option, oIndex) => (
-                                <TableCell key={oIndex}>{option}</TableCell>
-                              ))}
-                              <TableCell>{question.correctAnswer}</TableCell>
-                              <TableCell>
-                                {/* Add actions like Edit/Delete */}
-                                <IconButton aria-label="edit" size="small">
-                                  <FaRegEdit />
-                                </IconButton>
-                                <IconButton
-                                  aria-label="delete"
-                                  size="small"
-                                  onClick={() => {
-                                    DeleteData(
-                                      row.Data,
-                                      mode,
-                                      question.questionText
-                                    );
-                                  }}
-                                >
-                                  <MdDeleteOutline />
-                                </IconButton>
-                              </TableCell>
-                            </TableRow>
-                          )
-                        )}
-                      </React.Fragment>
-                    ))}
-                  </React.Fragment>
-                )) /* From Uiverse.io by andrew-demchenk0 */
-              ) : (
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                  <div className="cube-loader mb-6">
-                    <div className="cube-top"></div>
-                    <div className="cube-wrapper">
-                      <span style={{ "--i": 0 }} className="cube-span"></span>
-                      <span style={{ "--i": 1 }} className="cube-span"></span>
-                      <span style={{ "--i": 2 }} className="cube-span"></span>
-                      <span style={{ "--i": 3 }} className="cube-span"></span>
+                          {/* Questions */}
+                          {row.Data.modes[mode].questions.map(
+                            (question, qIndex) => (
+                              <TableRow
+                                hover
+                                role="checkbox"
+                                tabIndex={-1}
+                                key={qIndex}
+                              >
+                                <TableCell>{row.Data.title}</TableCell>
+                                <TableCell>{mode}</TableCell>
+                                <TableCell>{question.questionText}</TableCell>
+                                {question.options.map((option, oIndex) => (
+                                  <TableCell key={oIndex}>{option}</TableCell>
+                                ))}
+                                <TableCell>{question.correctAnswer}</TableCell>
+                                <TableCell>
+                                  {/* Add actions like Edit/Delete */}
+                                  <IconButton
+                                    aria-label="edit"
+                                    size="small"
+                                    onClick={() =>
+                                      handleClickOpen(
+                                        row.Data,
+                                        mode,
+                                        question.questionText
+                                      )
+                                    }
+                                  >
+                                    <FaRegEdit />
+                                  </IconButton>
+                                  <IconButton
+                                    aria-label="delete"
+                                    size="small"
+                                    onClick={() => {
+                                      DeleteData(
+                                        row.Data,
+                                        mode,
+                                        question.questionText
+                                      );
+                                    }}
+                                  >
+                                    <MdDeleteOutline />
+                                  </IconButton>
+                                </TableCell>
+                              </TableRow>
+                            )
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </React.Fragment>
+                  )) /* From Uiverse.io by andrew-demchenk0 */
+                ) : (
+                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <div className="cube-loader mb-6">
+                      <div className="cube-top"></div>
+                      <div className="cube-wrapper">
+                        <span style={{ "--i": 0 }} className="cube-span"></span>
+                        <span style={{ "--i": 1 }} className="cube-span"></span>
+                        <span style={{ "--i": 2 }} className="cube-span"></span>
+                        <span style={{ "--i": 3 }} className="cube-span"></span>
+                      </div>
                     </div>
+                    <h1 className="text-xl font-bold">Loading...</h1>
                   </div>
-                  <h1 className="text-xl font-bold">Loading...</h1>
-                </div>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
-    </Box>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
+      </Box>
+      <React.Fragment>
+        {open && (
+          <Dialogg
+            open={open}
+            onClose={handleClose}
+            Data={json}
+            updateData={updateData}
+          />
+        )}
+      </React.Fragment>
+    </>
   );
 }
