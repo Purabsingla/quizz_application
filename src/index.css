@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @import "tailwindcss";
 body {
   font-family: "Inter", sans-serif;
@@ -175,3 +176,9 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(to bottom, #2563eb, #7c3aed);
 }
+=======
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&display=swap");
+>>>>>>> f882a12a9e4ec7441301f8d78bb8330960f42074
