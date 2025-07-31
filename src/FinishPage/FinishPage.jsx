@@ -18,7 +18,7 @@ export default function Finish({ Points, total, mode, language, HandleClick }) {
             <p className="flex justify-between mb-2">
               <span>Score:</span>
               <span className="text-blue-500 font-bold">
-                {Points} / {total}
+                {Points} / {total} / {mode} / {language}
               </span>
             </p>
           </div>

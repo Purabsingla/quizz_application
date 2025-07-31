@@ -12,8 +12,6 @@ import Instruction from "./Instrunctions/Instrunctions";
 // import DataStore from "./Admin/DataStore/DataStore";
 // import Quiz from "./Questions/MCQ";
 function App() {
-  const [language, setLanguage] = useState("");
-  const [mode, setMode] = useState("");
   const [viewSidebar, setViewSidebar] = useState(false);
   return (
     <div className="App">
@@ -24,14 +22,8 @@ function App() {
       ) : (
         <div>
           <Routes>
-            <Route
-              path="/"
-              element={<Home setLanguage={setLanguage} setMode={setMode} />}
-            />
-            <Route
-              path="/instruction"
-              element={<Instruction language={language} mode={mode} />}
-            ></Route>
+            <Route path="/" element={<Home />} />
+            <Route path="/instruction" element={<Instruction />}></Route>
             <Route
               path="/Login"
               element={<ResponsiveDrawer setViewSidebar={setViewSidebar} />}

@@ -1,10 +1,14 @@
 import Button from "@mui/material/Button";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "../CSS/Loader.css";
 import Quiz from "../Questions/MCQ";
 import axios from "axios";
 import Finish from "../FinishPage/FinishPage";
-export default function Instruction({ mode, language }) {
+import { Context } from "../context/CreateContext";
+export default function Instruction() {
+  const { quizData } = useContext(Context);
+  const { mode, language } = quizData;
+  console.log(mode, language);
   let Data = {
     question: mode === "Easy" ? 7 : mode === "Intermediate" ? 6 : 5,
     total: mode === "Easy" ? 70 : mode === "Intermediate" ? 60 : 50,

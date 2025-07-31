@@ -15,8 +15,13 @@ import {
 import { TbBrandCpp } from "react-icons/tb";
 import { SiKotlin } from "react-icons/si";
 import { RiFlutterFill } from "react-icons/ri";
+import { useContext } from "react";
+import { Context } from "../context/CreateContext";
+// import { useQuizContext } from "../context/useContext";
 
 const SkillCard = ({ handleClickOpen }) => {
+  const { setQuizData } = useContext(Context);
+
   const skills = [
     {
       name: "HTML",
@@ -209,6 +214,12 @@ const SkillCard = ({ handleClickOpen }) => {
     }
   };
 
+  const HandleClick = (skill) => {
+    setQuizData({
+      language: skill.name,
+    });
+  };
+
   return (
     <section className="relative py-24 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
       {/* Background Elements */}
@@ -248,7 +259,10 @@ const SkillCard = ({ handleClickOpen }) => {
                 key={skill.name}
                 className={`group relative bg-gradient-to-br ${skill.gradient} rounded-3xl p-8 shadow-2xl ${skill.shadowColor} ${skill.hoverShadow} transform transition-all duration-500 hover:scale-105 hover:-translate-y-2 cursor-pointer overflow-hidden animate-fade-in-up`}
                 style={{ animationDelay: `${index * 100}ms` }}
-                onClick={() => handleClickOpen(skill.name)}
+                onClick={() => {
+                  handleClickOpen();
+                  HandleClick(skill);
+                }}
               >
                 {/* Background Icon */}
                 <div className="absolute -top-4 -right-4 opacity-10 group-hover:opacity-20 transition-opacity duration-500">

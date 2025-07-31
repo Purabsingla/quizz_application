@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-<<<<<<< HEAD
 import image from "../../assets/Loginimage.png";
-=======
-import image from "../../assests/Loginimage.png";
->>>>>>> f882a12a9e4ec7441301f8d78bb8330960f42074
 function AdminLogin({ setViewSidebar }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

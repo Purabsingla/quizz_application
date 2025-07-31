@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import image from "../../assets/QuizHome.jpg";
-=======
-import image from "../../assests/QuizHome.jpg";
->>>>>>> f882a12a9e4ec7441301f8d78bb8330960f42074
 export default function AdminHome() {
   return (
     <>
